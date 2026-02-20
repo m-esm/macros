@@ -1,0 +1,30 @@
+Macros — Nutrition grid for your grocery shopping.
+
+Browse any category on Wolt Market and click "Show nutrition table" to see every product's calories, protein, fat, carbohydrates, and fiber — all in one sortable, filterable table.
+
+FEATURES
+
+- Nutrition table overlay — see kcal, protein, fat, carbs, and fiber for every product in a category
+- Smart scoring — rank products using built-in presets: High Protein, Low Carb, or Balanced
+- Custom scoring — create your own formula by adjusting 6 nutrient weight sliders
+- Range filters — set minimum protein/fiber and maximum fat/carb thresholds
+- Text search — instantly filter products by name
+- Product images and prices shown alongside nutrition data
+- Click any row to open the product on Wolt
+- Fast — nutrition data is cached locally for instant revisits
+- Private — no data collection, no analytics, no tracking
+
+HOW IT WORKS
+
+Navigate to any Wolt Market venue page and browse a category. A floating "Show nutrition table" button appears. Click it to open the nutrition table. Sort by any column, apply filters, or use scoring presets to find products that match your dietary goals.
+
+The extension reads product data directly from Wolt's own APIs. No external servers are involved — everything runs locally in your browser.
+
+SUPPORTED STORES
+
+Currently supports Wolt Market (wolt.com).
+
+PERMISSIONS
+
+- Storage: saves your score preset and custom weight preferences
+- Wolt domains: reads product listings and nutrition information from Wolt's APIs

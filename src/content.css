@@ -1,0 +1,685 @@
+/* Macros — content.css
+   Follows system color scheme via prefers-color-scheme.
+   Accent: #009de0 (Wolt blue) in both themes. */
+
+/* ── Theme tokens ───────────────────────────────────────────────────────── */
+#hw-root, #hw-backdrop, #hw-back-btn, #hw-show-btn {
+  --hw-bg:             #ffffff;
+  --hw-bg-elevated:    #f7f7f7;
+  --hw-bg-input:       #ffffff;
+  --hw-bg-hover:       #f0f0f0;
+  --hw-border:         #e0e0e0;
+  --hw-border-strong:  #ccc;
+  --hw-text:           #1a1a1a;
+  --hw-text-secondary: #555;
+  --hw-text-tertiary:  #888;
+  --hw-text-muted:     #aaa;
+  --hw-shadow:         rgba(0,0,0,0.12);
+  --hw-shadow-heavy:   rgba(0,0,0,0.18);
+  --hw-backdrop:       rgba(0,0,0,0.25);
+  --hw-shimmer-base:   #eaeaea;
+  --hw-shimmer-hi:     #f5f5f5;
+  --hw-even-row:       rgba(0,0,0,0.025);
+  --hw-section-gap:    #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  #hw-root, #hw-backdrop, #hw-back-btn, #hw-show-btn {
+    --hw-bg:             #141414;
+    --hw-bg-elevated:    #181818;
+    --hw-bg-input:       #1c1c1c;
+    --hw-bg-hover:       #2a2a2a;
+    --hw-border:         #2a2a2a;
+    --hw-border-strong:  #3a3a3a;
+    --hw-text:           #e0e0e0;
+    --hw-text-secondary: #999;
+    --hw-text-tertiary:  #777;
+    --hw-text-muted:     #666;
+    --hw-shadow:         rgba(0,0,0,0.5);
+    --hw-shadow-heavy:   rgba(0,0,0,0.7);
+    --hw-backdrop:       rgba(0,0,0,0.5);
+    --hw-shimmer-base:   #1c1c1c;
+    --hw-shimmer-hi:     #2a2a2a;
+    --hw-even-row:       rgba(255,255,255,0.012);
+    --hw-section-gap:    #141414;
+  }
+}
+
+/* ── Root container (fixed modal with margin) ────────────────────────────── */
+#hw-root {
+  position: fixed;
+  top: 30px;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 60px);
+  max-width: 1200px;
+  z-index: 10000;
+  overflow: auto;
+  background: var(--hw-bg);
+  color: var(--hw-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 14px;
+  border: 1px solid var(--hw-border);
+  box-shadow: 0 12px 48px var(--hw-shadow-heavy);
+}
+
+/* Dim backdrop behind the modal */
+#hw-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--hw-backdrop);
+}
+
+/* ── Filter bar ──────────────────────────────────────────────────────────── */
+#hw-filterbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--hw-bg);
+  border-bottom: 1px solid var(--hw-border);
+  border-radius: 14px 14px 0 0;
+}
+
+#hw-search {
+  background: var(--hw-bg-input);
+  border: 1px solid var(--hw-border-strong);
+  border-radius: 8px;
+  color: var(--hw-text);
+  font-size: 13px;
+  padding: 7px 14px;
+  outline: none;
+  width: 200px;
+  transition: border-color 0.15s;
+}
+
+#hw-search:focus {
+  border-color: #009de0;
+}
+
+#hw-search::placeholder {
+  color: var(--hw-text-muted);
+}
+
+#hw-presets {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.hw-preset {
+  padding: 5px 14px;
+  border: 1px solid var(--hw-border-strong);
+  border-radius: 16px;
+  background: transparent;
+  color: var(--hw-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.hw-preset:hover {
+  border-color: #009de0;
+  color: var(--hw-text);
+}
+
+.hw-preset.active {
+  background: #009de0;
+  border-color: #009de0;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Close button (in filterbar) ─────────────────────────────────────────── */
+#hw-close-btn {
+  background: transparent;
+  border: 1px solid var(--hw-border-strong);
+  border-radius: 8px;
+  color: var(--hw-text-tertiary);
+  font-size: 20px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+#hw-close-btn:hover {
+  background: var(--hw-bg-hover);
+  border-color: #f66;
+  color: #f66;
+}
+
+/* ── Status bar ──────────────────────────────────────────────────────────── */
+#hw-status {
+  font-size: 11px;
+  color: #f66;
+  white-space: nowrap;
+}
+
+#hw-status:empty { display: none; }
+
+/* ── Custom weight sliders ───────────────────────────────────────────────── */
+#hw-custom-weights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 20px;
+  background: var(--hw-bg-elevated);
+  border-top: 1px solid var(--hw-border);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#hw-custom-weights[hidden] {
+  display: none;
+}
+
+.hw-weight-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--hw-text-secondary);
+}
+
+.hw-weight-label span:first-child {
+  width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hw-weight-label input[type="range"] {
+  width: 90px;
+  accent-color: #009de0;
+}
+
+.hw-weight-val {
+  width: 20px;
+  text-align: right;
+  color: var(--hw-text);
+  font-weight: 600;
+}
+
+/* ── Columns panel ───────────────────────────────────────────────────────── */
+#hw-columns-wrap {
+  position: relative;
+}
+
+#hw-columns-btn {
+  padding: 5px 14px;
+  border: 1px solid var(--hw-border-strong);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--hw-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+#hw-columns-btn:hover {
+  border-color: #009de0;
+  color: var(--hw-text);
+}
+
+#hw-columns-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--hw-bg-input);
+  border: 1px solid var(--hw-border-strong);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 200;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px var(--hw-shadow);
+}
+
+#hw-columns-panel[hidden] {
+  display: none;
+}
+
+#hw-columns-panel label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--hw-text-secondary);
+  font-size: 12px;
+}
+
+#hw-columns-panel label:hover { color: var(--hw-text); }
+
+#hw-columns-panel input[type="checkbox"] {
+  accent-color: #009de0;
+  cursor: pointer;
+}
+
+/* ── Category chips ─────────────────────────────────────────────────────── */
+#hw-category-chips {
+  display: flex;
+  gap: 6px;
+  padding: 6px 12px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+#hw-category-chips:empty {
+  display: none;
+}
+
+.hw-chip {
+  flex-shrink: 0;
+  padding: 4px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: #ccc;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.hw-chip:hover {
+  border-color: #009de0;
+  color: #fff;
+}
+
+.hw-chip.active {
+  background: #009de0;
+  color: #fff;
+  border-color: #009de0;
+}
+
+/* ── Range filters ───────────────────────────────────────────────────────── */
+#hw-range-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--hw-bg-elevated);
+  border-bottom: 1px solid var(--hw-border);
+}
+
+#hw-range-filters:empty {
+  display: none;
+}
+
+.hw-range-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--hw-bg-input);
+  border: 1px solid var(--hw-border);
+  border-radius: 8px;
+  min-width: 140px;
+}
+
+.hw-range-name {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--hw-text-secondary);
+  white-space: nowrap;
+  min-width: 40px;
+}
+
+.hw-range-slider {
+  flex: 1;
+  accent-color: #009de0;
+  cursor: pointer;
+  min-width: 60px;
+}
+
+.hw-range-val {
+  font-size: 11px;
+  color: #009de0;
+  font-weight: 600;
+  min-width: 28px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── Table wrap ──────────────────────────────────────────────────────────── */
+#hw-table-wrap {
+  padding: 0 4px;
+}
+
+/* ── Table ───────────────────────────────────────────────────────────────── */
+#hw-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  min-width: 800px;
+}
+
+#hw-table col.hw-col-hidden {
+  visibility: collapse;
+}
+
+#hw-table th,
+#hw-table td {
+  padding: 10px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--hw-border);
+  white-space: nowrap;
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+/* Name column: left-aligned, stacked name + price */
+#hw-table th[data-col="name"],
+#hw-table td[data-col="name"] {
+  text-align: left;
+  white-space: normal;
+  width: 260px;
+  min-width: 180px;
+  max-width: 300px;
+  font-weight: 500;
+}
+
+.hw-item-name {
+  display: block;
+}
+
+.hw-item-price {
+  display: block;
+  font-size: 12px;
+  color: var(--hw-text-secondary);
+  font-weight: 400;
+}
+
+/* Image column */
+#hw-table th:first-child,
+#hw-table td:first-child {
+  text-align: center;
+  padding: 6px 8px;
+  width: 76px;
+  min-width: 76px;
+}
+
+/* ── Table head ──────────────────────────────────────────────────────────── */
+#hw-table thead th {
+  background: var(--hw-bg-elevated);
+  color: var(--hw-text-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: sticky;
+  top: 50px;  /* below filter bar */
+  z-index: 10;
+  border-bottom: 1px solid var(--hw-border);
+}
+
+#hw-table th[data-sort] {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.1s;
+}
+
+#hw-table th[data-sort]:hover {
+  color: var(--hw-text);
+}
+
+#hw-table th[data-dir="asc"]::after  { content: ' \2191'; color: #009de0; }
+#hw-table th[data-dir="desc"]::after { content: ' \2193'; color: #009de0; }
+
+/* Computed columns: light tint */
+#hw-table .hw-computed {
+  background: rgba(0, 157, 224, 0.04);
+}
+
+#hw-table thead th.hw-computed {
+  background: rgba(0, 157, 224, 0.08);
+}
+
+/* ── Section header rows ─────────────────────────────────────────────────── */
+#hw-table .hw-section-header td {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--hw-text);
+  background: rgba(0, 157, 224, 0.10);
+  border-left: 4px solid #009de0;
+  border-bottom: 1px solid rgba(0, 157, 224, 0.15);
+  border-top: 8px solid var(--hw-section-gap);
+  padding: 12px 20px;
+  text-align: left !important;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: normal;
+  width: auto;
+  min-width: 0;
+}
+
+/* First section: no top gap */
+#hw-table tbody:first-of-type .hw-section-header td {
+  border-top: none;
+}
+
+.hw-section-name {
+  margin-right: 10px;
+}
+
+.hw-section-count {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--hw-text-muted);
+  text-transform: lowercase;
+  letter-spacing: 0;
+}
+
+/* ── Body rows ───────────────────────────────────────────────────────────── */
+#hw-table tbody tr {
+  transition: background 0.1s;
+  cursor: pointer;
+}
+
+#hw-table tbody tr:not(.hw-section-header):hover td {
+  background: rgba(0, 157, 224, 0.06);
+}
+
+#hw-table tbody tr:nth-child(even):not(.hw-section-header) td {
+  background: var(--hw-even-row);
+}
+
+#hw-table tbody tr:nth-child(even):not(.hw-section-header):hover td {
+  background: rgba(0, 157, 224, 0.06);
+}
+
+#hw-table tbody tr.hw-indented td:nth-child(2) {
+  padding-left: 1.8em;
+  opacity: 0.8;
+}
+
+/* Strikethrough for original price */
+.hw-strikethrough {
+  text-decoration: line-through;
+  opacity: 0.4;
+  font-size: 12px;
+}
+
+/* No nutrition rows */
+.hw-no-nutri {
+  opacity: 0.4;
+}
+
+/* Hidden via optional columns panel */
+.hw-col-hidden {
+  display: none;
+}
+
+/* ── Thumbnail ───────────────────────────────────────────────────────────── */
+#hw-table td:first-child img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  transition: transform 0.15s;
+}
+
+#hw-table tbody tr:hover td:first-child img {
+  transform: scale(1.08);
+}
+
+#hw-table td:first-child .hw-img-wrap {
+  display: block;
+  line-height: 0;
+  cursor: pointer;
+}
+
+/* ── Name links ──────────────────────────────────────────────────────────── */
+#hw-table td .hw-item-name {
+  color: var(--hw-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+#hw-table td .hw-item-name:hover {
+  color: #009de0;
+}
+
+/* ── Score cell ──────────────────────────────────────────────────────────── */
+.hw-score-val {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--hw-text);
+}
+
+.hw-score-rank {
+  font-size: 11px;
+  color: var(--hw-text-muted);
+  margin-left: 4px;
+}
+
+/* ── Shimmer loading animation ───────────────────────────────────────────── */
+@keyframes hw-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.hw-shimmer {
+  background: linear-gradient(90deg, var(--hw-shimmer-base) 25%, var(--hw-shimmer-hi) 50%, var(--hw-shimmer-base) 75%);
+  background-size: 800px 100%;
+  animation: hw-shimmer 1.4s infinite linear;
+  border-radius: 4px;
+  min-height: 14px;
+}
+
+tr.hw-loading td {
+  background: linear-gradient(90deg, var(--hw-shimmer-base) 25%, var(--hw-shimmer-hi) 50%, var(--hw-shimmer-base) 75%);
+  background-size: 800px 100%;
+  animation: hw-shimmer 1.4s infinite linear;
+  height: 48px;
+}
+
+/* ── No-nutrition section ────────────────────────────────────────────────── */
+#hw-no-nutrition .hw-section-header td {
+  border-left-color: var(--hw-text-tertiary);
+  color: var(--hw-text-tertiary);
+}
+
+/* ── Back-to-table floating button ───────────────────────────────────────── */
+#hw-back-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10002;
+  background: #009de0;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 157, 224, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+#hw-back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 157, 224, 0.5);
+}
+
+/* ── Show nutrition table button ──────────────────────────────────────── */
+#hw-show-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10002;
+  background: #009de0;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 157, 224, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+#hw-show-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 157, 224, 0.5);
+}
+
+/* ── Preset description ──────────────────────────────────────────────── */
+.hw-preset-desc {
+  font-size: 11px;
+  color: var(--hw-text-tertiary);
+  white-space: nowrap;
+}
+
+.hw-preset-desc:empty {
+  display: none;
+}
+
+/* ── Error toast ───────────────────────────────────────────────────────── */
+#hw-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 10003;
+  background: #333;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  max-width: 400px;
+  text-align: center;
+}
+
+#hw-toast.hw-toast-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}

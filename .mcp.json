@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "/Users/mohsen/Desktop/myprojects/healthy-wolt/start-mcp.sh",
+      "args": []
+    }
+  }
+}

@@ -1,0 +1,24 @@
+REVIEWER NOTES — Macros
+
+What this extension does:
+Macros adds a nutrition information table overlay to Wolt Market (wolt.com) venue pages. It helps users compare grocery products by their nutritional values (calories, protein, fat, carbohydrates, fiber).
+
+How to test:
+1. Install the extension
+2. Navigate to a Wolt Market venue page, e.g.:
+   https://wolt.com/en/fin/helsinki/venue/wolt-market-vallila/items/meijerituotteet-munat-100
+3. Wait for the page to load — a floating "Show nutrition table" button appears at the bottom-right
+4. Click the button to open the nutrition table
+5. Try sorting columns, using the search bar, or switching score presets
+
+Technical details:
+- The extension intercepts Wolt's own category API responses (via fetch patching in MAIN world) to capture product data as it loads
+- Product nutrition info is fetched from prodinfo.wolt.com (Wolt's own nutrition service) via the background service worker (required for CORS)
+- No remote code execution, no eval(), no external servers
+- All data processing happens locally in the browser
+- User preferences (score preset, custom weights) are stored via chrome.storage.local
+
+Host permissions justification:
+- wolt.com: Content scripts need to run on Wolt pages to inject the nutrition table UI
+- prodinfo.wolt.com: Fetches product nutrition information (HTML pages with nutrition tables)
+- consumer-api.wolt.com: Fetches category product listings to discover all items

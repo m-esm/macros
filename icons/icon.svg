@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2DC7A7"/>
+      <stop offset="100%" stop-color="#1BA885"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect x="4" y="4" width="120" height="120" rx="26" ry="26" fill="url(#bg)"/>
+  <!-- Table/grid icon (white) representing nutrition data -->
+  <rect x="28" y="34" width="72" height="60" rx="6" fill="white" opacity="0.95"/>
+  <!-- Header row -->
+  <rect x="28" y="34" width="72" height="14" rx="6" fill="white"/>
+  <rect x="28" y="42" width="72" height="6" fill="white"/>
+  <rect x="28" y="34" width="72" height="14" fill="rgba(0,0,0,0.08)"/>
+  <!-- Vertical column lines -->
+  <line x1="52" y1="34" x2="52" y2="94" stroke="#1BA885" stroke-width="1.5" opacity="0.3"/>
+  <line x1="76" y1="34" x2="76" y2="94" stroke="#1BA885" stroke-width="1.5" opacity="0.3"/>
+  <!-- Horizontal row lines -->
+  <line x1="28" y1="48" x2="100" y2="48" stroke="#1BA885" stroke-width="1.5" opacity="0.4"/>
+  <line x1="28" y1="60" x2="100" y2="60" stroke="#1BA885" stroke-width="1.5" opacity="0.25"/>
+  <line x1="28" y1="72" x2="100" y2="72" stroke="#1BA885" stroke-width="1.5" opacity="0.25"/>
+  <line x1="28" y1="84" x2="100" y2="84" stroke="#1BA885" stroke-width="1.5" opacity="0.25"/>
+  <!-- Check marks in cells (indicating good nutritional values) -->
+  <path d="M35 55 l3 3 l6-6" stroke="#1BA885" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M35 67 l3 3 l6-6" stroke="#1BA885" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M35 79 l3 3 l6-6" stroke="#1BA885" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Small bar chart elements in right columns -->
+  <rect x="56" y="56" width="14" height="4" rx="1" fill="#2DC7A7" opacity="0.7"/>
+  <rect x="56" y="68" width="10" height="4" rx="1" fill="#2DC7A7" opacity="0.7"/>
+  <rect x="56" y="80" width="16" height="4" rx="1" fill="#2DC7A7" opacity="0.7"/>
+  <rect x="80" y="56" width="12" height="4" rx="1" fill="#2DC7A7" opacity="0.5"/>
+  <rect x="80" y="68" width="16" height="4" rx="1" fill="#2DC7A7" opacity="0.5"/>
+  <rect x="80" y="80" width="8" height="4" rx="1" fill="#2DC7A7" opacity="0.5"/>
+  <!-- Heart (health) at top right -->
+  <path d="M88 18 c-3-4-9-4-12 0 c-3-4-9-4-12 0 c-4 5 0 11 12 18 c12-7 16-13 12-18z" fill="white" opacity="0.9"/>
+</svg>
