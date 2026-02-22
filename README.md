@@ -80,4 +80,4 @@ Macros does **not** collect, transmit, or store any personal data. All nutrition
 
 ## License
 
-MIT
+Free for personal, non-commercial use. See [LICENSE](LICENSE) for details.

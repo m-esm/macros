@@ -1,17 +1,27 @@
 {
   "name": "macros",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "1.1.0",
+  "description": "Nutrition grid for your grocery shopping — Chrome extension for Wolt Market",
+  "author": "Mohsen",
+  "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://github.com/m-esm/macros",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/m-esm/macros.git"
+  },
+  "keywords": [
+    "chrome-extension",
+    "nutrition",
+    "wolt",
+    "grocery",
+    "health"
+  ],
   "scripts": {
     "build": "bash build.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "version": "bash scripts/version.sh",
+    "release": "bash scripts/release.sh"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
+  "devDependencies": {
     "playwright": "^1.58.2"
   }
 }

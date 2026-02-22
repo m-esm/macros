@@ -5,25 +5,32 @@ Nutrition grid for your grocery shopping. Injects a sortable/filterable dark-the
 ## Project Structure
 
 ```
-healthy-wolt/
-├── manifest.json          # MV3 extension manifest
+macros/
+├── manifest.json              # MV3 extension manifest (source of truth for version)
+├── package.json               # npm metadata (version synced with manifest)
+├── LICENSE                    # Non-commercial license
 ├── src/
-│   ├── injector.js        # MAIN world: intercepts Wolt fetch API calls
-│   ├── content.js         # ISOLATED world: state, table UI, prodinfo fetching
-│   ├── content.css        # Dark-themed modal + table styles
-│   ├── background.js      # Service worker: proxies prodinfo.wolt.com fetches (avoids CORS)
-│   ├── popup.html         # Extension popup with enable/disable toggle
-│   └── popup.js           # Popup logic (chrome.storage)
-├── icons/                 # Extension icons (16, 48, 128)
-├── launch-chrome.sh       # Launches Chrome for Testing with extension + CDP
-├── start-mcp.sh           # Launches Chrome + Playwright MCP server
-├── playwright-mcp.config.ini
-└── .mcp.json              # MCP server config for Claude Code
+│   ├── injector.js            # MAIN world: intercepts Wolt fetch API calls
+│   ├── content.js             # ISOLATED world: state, table UI, prodinfo fetching
+│   ├── content.css            # Dark-themed modal + table styles
+│   ├── background.js          # Service worker: proxies prodinfo.wolt.com fetches (CORS)
+│   ├── popup.html             # Extension popup with enable/disable toggle
+│   └── popup.js               # Popup logic (chrome.storage)
+├── icons/                     # Extension icons (16, 48, 128 PNG + source SVG)
+├── store/                     # Chrome Web Store assets (screenshots, description)
+├── scripts/
+│   ├── version.sh             # Bump version in manifest + package.json
+│   └── release.sh             # Tag + GitHub release with built zip
+├── build.sh                   # Build .zip for Chrome Web Store
+├── launch-chrome.sh           # Launch Chrome for Testing with extension + CDP
+├── start-mcp.sh               # Launch Chrome + Playwright MCP server
+├── privacy.html               # Privacy policy page
+└── .mcp.json                  # MCP server config for Claude Code
 ```
 
 ## Architecture
 
-Two content scripts injected on `https://wolt.com/*/venue/*/items/*`:
+Two content scripts injected on `https://wolt.com/*`:
 
 1. **injector.js** (MAIN world, `document_start`): Patches `window.fetch` to intercept Wolt's category API responses. Passes data to content.js via DOM elements (`<script data-hw-event>`), NOT via CustomEvent detail (detail doesn't cross MAIN↔ISOLATED boundary).
 
@@ -46,9 +53,37 @@ Content script (ISOLATED world) cannot trigger React event handlers directly. To
 - Dispatches `new Event('hw:click')`
 - injector.js (MAIN world) reads the selector and calls `.click()` on the matching element
 
-### SSR data format
+### Internal prefixes
 
-Wolt embeds TanStack Query dehydrated state in a `<script>` tag. The content may be URL-encoded (`%7B%22mutations%22...`) — must `decodeURIComponent` before `JSON.parse`. Contains venue ID, category items, etc.
+All internal code uses `hw-` / `hw:` prefixes (from the original "Healthy Wolt" name). These are invisible to users and intentionally kept as-is:
+- `hw-*` DOM IDs and CSS classes
+- `--hw-*` CSS custom properties
+- `hw:*` event names and message types
+- `hw:pi:v1:*` localStorage cache keys
+
+## Versioning & Releases
+
+**Source of truth**: `manifest.json` version field.
+
+### Bump version
+```bash
+npm run version -- patch   # 1.1.0 → 1.1.1
+npm run version -- minor   # 1.1.0 → 1.2.0
+npm run version -- major   # 1.1.0 → 2.0.0
+```
+This updates both `manifest.json` and `package.json`, then builds the zip.
+
+### Create a release
+```bash
+npm run release
+```
+This builds the zip, creates a git tag `vX.Y.Z`, pushes it, and creates a GitHub release with the zip attached.
+
+### Build only (no version change)
+```bash
+npm run build
+```
+Outputs `macros-X.Y.Z.zip` for Chrome Web Store upload.
 
 ## Current Features
 
@@ -68,8 +103,8 @@ Wolt embeds TanStack Query dehydrated state in a `<script>` tag. The content may
 ### Filtering
 - **Text search**: filters by product name
 - **Directional range sliders**:
-  - "Min Protein" / "Min Fiber" — drag right to set minimum threshold (≥X)
-  - "Max Fat" / "Max Carbohydrate" — drag left to set maximum threshold (≤X)
+  - "Min Protein" / "Min Fiber" — drag right to set minimum threshold
+  - "Max Fat" / "Max Carbohydrate" — drag left to set maximum threshold
   - All start at "all" (no filter active)
 
 ### Sorting
@@ -91,7 +126,6 @@ Wolt embeds TanStack Query dehydrated state in a `<script>` tag. The content may
 ### Prerequisites
 
 - Chrome for Testing installed via Playwright: `npx playwright install chromium`
-  - Located at: `/Users/mohsen/Library/Caches/ms-playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing`
 - Node.js with playwright package: `npm install` in project root
 
 ### How to test
@@ -105,49 +139,21 @@ Wolt embeds TanStack Query dehydrated state in a `<script>` tag. The content may
    ```bash
    bash launch-chrome.sh &
    ```
-   This starts Chrome for Testing with:
-   - `--remote-debugging-port=9333` (CDP for MCP/DevTools)
-   - `--load-extension=.` (loads the extension from project root)
-   - `--user-data-dir=./chrome-profile` (isolated profile)
 
-3. **Verify Chrome is running**:
-   ```bash
-   curl -s http://localhost:9333/json/version
-   ```
-
-4. **Navigate to a Wolt venue page** (via MCP or manually):
+3. **Navigate to a Wolt venue page**:
    ```
    https://wolt.com/en/fin/helsinki/venue/wolt-market-vallila/items/ruoanvalmistus-101
    ```
 
-5. **Check extension is loaded**: Visit `chrome://extensions` — "Macros" should appear with no errors.
-
-6. **Verify in DevTools console**:
-   - `window.fetch.toString()` should NOT contain `[native code]` (injector.js patched it)
-   - `document.getElementById('hw-root')` should return the table container
-   - No `HW:` warnings in console (each is a counted error)
+4. **Verify**: Visit `chrome://extensions` — "Macros" should appear with no errors.
 
 ### IMPORTANT: Reuse browser tabs
 
-When testing with the Playwright MCP tools, **always reuse existing tabs** instead of opening new ones. Use `browser_tabs` to list tabs and `browser_navigate` to navigate the current tab. Do NOT open a new tab for every test — this wastes resources and leaves stale tabs behind. After testing, the tab should be left on the test page for the next interaction.
-
-### MCP-based testing (for Claude Code)
-
-The `.mcp.json` configures a Playwright MCP server that connects to Chrome via CDP on port 9333. This allows Claude Code to:
-
-- Take snapshots/screenshots of the page
-- Evaluate JavaScript in the page context (MAIN world)
-- Click, type, navigate — interact with the extension UI
-- Check console messages for errors
-
-To start the MCP server (usually done automatically by Claude Code):
-```bash
-bash start-mcp.sh
-```
+When testing with MCP tools, **always reuse existing tabs** instead of opening new ones. Use `browser_tabs` to list tabs and `browser_navigate` to navigate.
 
 ### Chrome caches extension files
 
-**Chrome aggressively caches extension JS/CSS**. After editing extension source files, you MUST restart Chrome for changes to take effect — a page reload alone is NOT sufficient.
+**Chrome aggressively caches extension JS/CSS**. After editing source files, you MUST restart Chrome:
 
 ```bash
 lsof -ti :9333 | xargs kill 2>/dev/null
@@ -163,27 +169,21 @@ rm -rf chrome-profile
 bash launch-chrome.sh &
 ```
 
-### Common issues
-
-- **Extension not visible in chrome://extensions**: Check `launch-chrome.sh` path, ensure `--load-extension` points to project root
-- **CORS errors on prodinfo fetch**: Prodinfo must go through background.js service worker, not direct fetch from content/injector scripts
-- **Table not appearing**: Check if SSR extraction found items (console: `HW:` messages). Wolt's SSR script may be URL-encoded
-- **CustomEvent detail is null**: This is expected — MAIN↔ISOLATED world boundary. Use DOM elements for data transfer
-- **Stale profile**: Delete `chrome-profile/` directory and restart Chrome
-- **CSS specificity**: Use `#hw-table .class td` when overriding `#hw-table td` rules — the ID selector needs to be present on both sides
-- **Changes not visible after reload**: Chrome caches extension files — restart Chrome entirely
-
 ## Code Conventions
 
 - Modern JS: optional chaining (`?.`), nullish coalescing (`??`), `Array.at()`, `for…of`
 - No build step, no frameworks — plain vanilla JS
 - Single mutable state object `S` — all mutations via explicit assignment
-- Parser (`parseProdinfo`) never touches CSS class names — structure-only
 - `normalizeItem()` is the sole place that knows Wolt's raw item shape
 - `getCellValue()` is the sole place that maps column keys to values
 - Error reporting: `reportError()` increments counter + `console.warn('HW:', ...)`
 
-## Test URL examples
+## Test URLs
 
-- `https://wolt.com/en/fin/helsinki/venue/wolt-market-vallila/items/ruoanvalmistus-101` (Cooking supplies — small category, good for quick tests)
-- `https://wolt.com/en/fin/helsinki/venue/wolt-market-vallila/items/meijerituotteet-munat-100` (Dairy & Eggs — parent category with subcategories)
+- `https://wolt.com/en/fin/helsinki/venue/wolt-market-vallila/items/ruoanvalmistus-101` — Cooking supplies (small, quick tests)
+- `https://wolt.com/en/fin/helsinki/venue/wolt-market-vallila/items/meijerituotteet-munat-100` — Dairy & Eggs (parent category with subcategories)
+
+## Git Conventions
+
+- Never add `Co-Authored-By` lines to commit messages
+- Commit messages: imperative mood, concise, focus on "why"
