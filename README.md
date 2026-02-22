@@ -2,9 +2,7 @@
 
 A Chrome extension that adds a nutrition facts table to [Wolt Market](https://wolt.com) venue pages. Browse, sort, filter, and score grocery products by their nutritional values — right inside Wolt.
 
-https://github.com/m-esm/macros/raw/main/demo.mp4
-
-![Macros in action](screenshot.jpg)
+![Macros demo](demo.gif)
 
 ## Features
 
