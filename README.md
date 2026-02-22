@@ -2,6 +2,8 @@
 
 A Chrome extension that adds a nutrition facts table to [Wolt Market](https://wolt.com) venue pages. Browse, sort, filter, and score grocery products by their nutritional values — right inside Wolt.
 
+https://github.com/m-esm/macros/raw/main/demo.mp4
+
 ![Macros in action](screenshot.jpg)
 
 ## Features
@@ -14,11 +16,6 @@ A Chrome extension that adds a nutrition facts table to [Wolt Market](https://wo
 - **Click to open** — click any row to open the product detail on Wolt
 - **SPA-aware** — automatically detects navigation between categories without page reload
 - **Local caching** — product nutrition info is cached in localStorage for fast revisits
-
-## Columns
-
-| Image | Name (+ price) | Score | Size | kcal | Protein | Fat | Carbohydrate | Fiber |
-|-------|----------------|-------|------|------|---------|-----|--------------|-------|
 
 ## Score Presets
 
