@@ -1,5 +1,6 @@
 node_modules/
 chrome-profile/
 .playwright-mcp/
+video/
 *.zip
 .DS_Store
