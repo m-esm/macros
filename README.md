@@ -1,8 +1,14 @@
 # Macros
 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/mmhjcmjpihgmgkeiiadkfgnndbbnkplj)](https://chromewebstore.google.com/detail/macros/mmhjcmjpihgmgkeiiadkfgnndbbnkplj)
+
 A Chrome extension that adds a nutrition facts table to [Wolt Market](https://wolt.com) venue pages. Browse, sort, filter, and score grocery products by their nutritional values — right inside Wolt.
 
 ![Macros demo](demo.gif)
+
+## Install
+
+**[Get Macros on the Chrome Web Store](https://chromewebstore.google.com/detail/macros/mmhjcmjpihgmgkeiiadkfgnndbbnkplj)**
 
 ## Features
 
@@ -24,9 +30,9 @@ A Chrome extension that adds a nutrition facts table to [Wolt Market](https://wo
 | **Balanced** | Protein ↑ Fiber ↑ Sugar ↓ Sat.Fat ↓ Carbs ↓ |
 | **Custom** | Adjust 6 nutrient weights from -5 to +5 |
 
-## Installation
+## Development
 
-### From source (developer mode)
+### Load from source
 
 1. Clone this repository:
    ```bash

@@ -18,7 +18,16 @@ Technical details:
 - All data processing happens locally in the browser
 - User preferences (score preset, custom weights) are stored via chrome.storage.local
 
+Permissions justification:
+
+storage:
+- Saves the user's selected score preset (High Protein, Low Carb, Balanced, Custom)
+- Saves custom scoring weights when the user adjusts the 6 nutrient sliders
+- Saves the extension enabled/disabled toggle state from the popup
+- No sensitive data is stored — only UI preference values
+- All storage is local (chrome.storage.local), nothing is synced
+
 Host permissions justification:
-- wolt.com: Content scripts need to run on Wolt pages to inject the nutrition table UI
-- prodinfo.wolt.com: Fetches product nutrition information (HTML pages with nutrition tables)
-- consumer-api.wolt.com: Fetches category product listings to discover all items
+- wolt.com: Content scripts run on Wolt Market pages to inject the nutrition table UI and intercept category API responses
+- prodinfo.wolt.com: The background service worker fetches product nutrition info pages (HTML containing nutrition tables) — required via service worker because content scripts cannot make cross-origin requests in MV3
+- consumer-api.wolt.com: Fetches paginated category product listings to discover all items in a category beyond what the initial page load provides
